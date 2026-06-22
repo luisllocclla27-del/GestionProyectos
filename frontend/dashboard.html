@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — GestionProyectos</title>
+  <meta name="description" content="Panel de control de proyectos académicos" />
+  <meta name="theme-color" content="#0a0b0f" />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" type="image/svg+xml" href="/static/icons/icon.svg" />
+  <link rel="stylesheet" href="/static/css/styles.css" />
+</head>
+<body>
+  <div class="bg-animated"></div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="/dashboard" class="navbar-brand">
+      <div class="navbar-logo">🔬</div>
+      <span>GestionProyectos</span>
+    </a>
+    <div class="navbar-nav">
+      <a href="/dashboard" class="nav-link active">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </a>
+      <a href="/calendario" class="nav-link">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Calendario
+      </a>
+      <a href="/reportes" class="nav-link">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Reportes
+      </a>
+      <a href="/clientes" class="nav-link">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Clientes
+      </a>
+      <a href="/nuevo" class="nav-link">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Nuevo
+      </a>
+      <button class="btn btn-secondary btn-sm" id="logout-btn" style="margin-left:8px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Salir
+      </button>
+    </div>
+  </nav>
+
+  <main class="container page-content">
+
+    <!-- Header + Búsqueda -->
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px;flex-wrap:wrap;">
+      <div>
+        <h1 style="margin-bottom:4px;">Panel de Control</h1>
+        <p id="fecha-hoy" style="color:var(--text-muted);font-size:0.875rem;"></p>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+        <!-- Búsqueda -->
+        <div style="position:relative;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            style="position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--text-muted);">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input type="text" id="search-input" placeholder="Buscar proyectos..."
+            style="padding:9px 14px 9px 34px;background:var(--bg-input);border:1px solid var(--border-medium);border-radius:var(--radius-md);color:var(--text-primary);font-family:inherit;font-size:0.875rem;outline:none;width:220px;transition:var(--transition);"
+            onfocus="this.style.borderColor='var(--brand-primary)'"
+            onblur="this.style.borderColor='var(--border-medium)'"
+          />
+        </div>
+        <button class="btn btn-secondary btn-sm" id="refresh-btn">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+          Actualizar
+        </button>
+        <div style="display:flex;gap:10px;">
+        <a href="/archivo" class="btn btn-secondary" style="text-decoration:none;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 8v13H3V8M1 3h22v5H1zM10 12h4"/></svg>
+          Ver Archivo
+        </a>
+        <a href="/nuevo" class="btn btn-primary" style="text-decoration:none;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Nuevo Proyecto
+        </a>
+      </div>
+      </div>
+    </div>
+
+    <!-- Métricas -->
+    <div class="metrics-grid" style="margin-bottom:20px;">
+      <div class="glass-card metric-card blue">
+        <div class="metric-icon blue">📋</div>
+        <div class="metric-label">Trabajos Activos</div>
+        <div class="metric-value" id="metric-activos">—</div>
+        <div class="metric-sub">proyectos en curso</div>
+      </div>
+      <div class="glass-card metric-card purple">
+        <div class="metric-icon purple">⚡</div>
+        <div class="metric-label">Entregas Próximas</div>
+        <div class="metric-value" id="metric-proximas">—</div>
+        <div class="metric-sub">en los próximos 7 días</div>
+      </div>
+      <div class="glass-card metric-card cyan">
+        <div class="metric-icon cyan">⏱️</div>
+        <div class="metric-label">Tiempo Esta Semana</div>
+        <div class="metric-value" id="metric-tiempo">—</div>
+        <div class="metric-sub">horas invertidas</div>
+      </div>
+      <div class="glass-card metric-card green">
+        <div class="metric-icon green">💰</div>
+        <div class="metric-label">Ingresos del Mes</div>
+        <div class="metric-value" id="metric-ingresos" style="font-size:1.5rem;">—</div>
+        <div class="metric-sub">proyectos entregados</div>
+      </div>
+    </div>
+
+    <!-- Barra de progreso global -->
+    <div class="glass-card" style="padding:14px 20px;margin-bottom:24px;display:flex;align-items:center;gap:16px;">
+      <span style="font-size:0.8125rem;color:var(--text-muted);white-space:nowrap;" id="global-progress-label">Progreso global</span>
+      <div style="flex:1;height:6px;background:var(--border-subtle);border-radius:3px;overflow:hidden;">
+        <div id="global-progress" style="height:100%;width:0%;background:linear-gradient(90deg,var(--brand-primary),var(--brand-success));border-radius:3px;transition:width 1s ease;"></div>
+      </div>
+    </div>
+
+    <!-- Kanban -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+      <h2 style="font-size:1.125rem;font-weight:700;">Tablero Kanban</h2>
+      <div style="font-size:0.75rem;color:var(--text-muted);display:flex;align-items:center;gap:6px;">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 9l4 4L19 7"/></svg>
+        Arrastra las tarjetas entre columnas · Usa › para avanzar estado
+      </div>
+    </div>
+
+    <div class="kanban-wrapper" id="kanban-board">
+      <!-- Pendiente -->
+      <div class="kanban-col" data-status="Pendiente" id="col-pendiente">
+        <div class="kanban-col-header">
+          <div class="kanban-col-title"><span class="kanban-col-dot dot-pendiente"></span>Pendiente</div>
+          <span class="kanban-count" id="count-pendiente">0</span>
+        </div>
+        <div class="kanban-cards" id="cards-pendiente"></div>
+      </div>
+
+      <!-- En Desarrollo -->
+      <div class="kanban-col" data-status="En Desarrollo" id="col-desarrollo">
+        <div class="kanban-col-header">
+          <div class="kanban-col-title"><span class="kanban-col-dot dot-desarrollo"></span>En Desarrollo</div>
+          <span class="kanban-count" id="count-desarrollo">0</span>
+        </div>
+        <div class="kanban-cards" id="cards-desarrollo"></div>
+      </div>
+
+      <!-- En Revisión -->
+      <div class="kanban-col" data-status="En Revisión" id="col-revision">
+        <div class="kanban-col-header">
+          <div class="kanban-col-title"><span class="kanban-col-dot dot-revision"></span>En Revisión</div>
+          <span class="kanban-count" id="count-revision">0</span>
+        </div>
+        <div class="kanban-cards" id="cards-revision"></div>
+      </div>
+
+      <!-- Entregado -->
+      <div class="kanban-col" data-status="Entregado" id="col-entregado">
+        <div class="kanban-col-header">
+          <div class="kanban-col-title"><span class="kanban-col-dot dot-entregado"></span>Entregado</div>
+          <span class="kanban-count" id="count-entregado">0</span>
+        </div>
+        <div class="kanban-cards" id="cards-entregado"></div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Modal -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal" id="project-modal">
+      <div class="modal-header">
+        <h3 id="modal-title" style="font-size:1rem;max-width:80%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></h3>
+        <button class="btn-icon" id="modal-close" style="flex-shrink:0;">✕</button>
+      </div>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="/static/js/auth.js"></script>
+  <script src="/static/js/api.js"></script>
+  <script src="/static/js/tracker.js"></script>
+  <script src="/static/js/dashboard.js"></script>
+</body>
+</html>

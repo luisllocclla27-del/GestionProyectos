@@ -1,0 +1,43 @@
+{
+  "name": "GestionProyectos",
+  "short_name": "GesProy",
+  "description": "Gestión interna de proyectos de redacción académica e investigación científica",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0a0b0f",
+  "theme_color": "#6366f1",
+  "lang": "es",
+  "categories": ["productivity", "utilities"],
+  "icons": [
+    {
+      "src": "/static/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/static/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Nuevo Proyecto",
+      "short_name": "Nuevo",
+      "description": "Registrar un nuevo proyecto",
+      "url": "/nuevo",
+      "icons": [{ "src": "/static/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Dashboard",
+      "short_name": "Panel",
+      "description": "Ver el panel de control",
+      "url": "/dashboard",
+      "icons": [{ "src": "/static/icons/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reportes — GestionProyectos</title>
+  <meta name="theme-color" content="#0a0b0f" />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" type="image/svg+xml" href="/static/icons/icon.svg" />
+  <link rel="stylesheet" href="/static/css/styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="bg-animated"></div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="/dashboard" class="navbar-brand">
+      <div class="navbar-logo">🔬</div>
+      <span>GestionProyectos</span>
+    </a>
+    <div class="navbar-nav">
+      <a href="/dashboard" class="nav-link">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </a>
+      <a href="/calendario" class="nav-link">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Calendario
+      </a>
+      <a href="/reportes" class="nav-link active">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Reportes
+      </a>
+      <a href="/clientes" class="nav-link">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Clientes
+      </a>
+      <a href="/nuevo" class="nav-link">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Nuevo
+      </a>
+    </div>
+  </nav>
+
+  <main class="container page-content">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
+      <div>
+        <h1 style="margin-bottom:4px;">Reportes y Análisis</h1>
+        <p>Métricas de rentabilidad y exportación de datos.</p>
+      </div>
+      <div>
+        <a href="/api/projects/export" target="_blank" class="btn btn-primary" id="btn-export">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Exportar CSV
+        </a>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+      <div class="glass-card" style="padding:20px;">
+        <h3 style="margin-bottom:20px;">Proyectos por Estado</h3>
+        <canvas id="chartEstado" height="250"></canvas>
+      </div>
+      <div class="glass-card" style="padding:20px;">
+        <h3 style="margin-bottom:20px;">Distribución de Tipos</h3>
+        <canvas id="chartTipo" height="250"></canvas>
+      </div>
+      <div class="glass-card" style="padding:20px;grid-column:1/-1;">
+        <h3 style="margin-bottom:20px;">Rentabilidad y Cobros Restantes</h3>
+        <div style="display:flex;justify-content:space-around;text-align:center;">
+            <div>
+                <p style="color:var(--text-muted);font-size:0.875rem;">Total Pendiente de Cobro</p>
+                <h2 id="total-saldos" style="color:var(--brand-danger);font-size:2.5rem;line-height:1;">S/ 0</h2>
+            </div>
+            <div>
+                <p style="color:var(--text-muted);font-size:0.875rem;">Promedio Rentabilidad/Hora</p>
+                <h2 id="promedio-renta" style="color:var(--brand-success);font-size:2.5rem;line-height:1;">S/ 0</h2>
+            </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="/static/js/api.js"></script>
+  <script src="/static/js/reportes.js"></script>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Clientes — GestionProyectos</title>
+  <meta name="theme-color" content="#0a0b0f"/>
+  <link rel="manifest" href="/manifest.json"/>
+  <link rel="stylesheet" href="/static/css/styles.css"/>
+</head>
+<body>
+  <div class="bg-animated"></div>
+
+  <nav class="navbar">
+    <a href="/dashboard" class="navbar-brand">
+      <div class="navbar-logo">🔬</div><span>GestionProyectos</span>
+    </a>
+    <div class="navbar-nav">
+      <a href="/dashboard" class="nav-link">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </a>
+      <a href="/clientes" class="nav-link active">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Clientes
+      </a>
+      <a href="/nuevo" class="nav-link">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Nuevo Proyecto
+      </a>
+      <button class="btn btn-secondary btn-sm" id="logout-btn" style="margin-left:8px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Salir
+      </button>
+    </div>
+  </nav>
+
+  <main class="container page-content">
+
+    <!-- Header -->
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:28px;flex-wrap:wrap;">
+      <div>
+        <h1 style="margin-bottom:4px;">Gestión de Clientes</h1>
+        <p style="color:var(--text-muted);font-size:0.875rem;">Directorio de clientes y sus proyectos asociados</p>
+      </div>
+      <button class="btn btn-primary" id="btn-nuevo-cliente">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Nuevo Cliente
+      </button>
+    </div>
+
+    <!-- Stats rápidas -->
+    <div id="client-stats" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:28px;"></div>
+
+    <!-- Lista de clientes -->
+    <div id="clients-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;"></div>
+
+  </main>
+
+  <!-- Modal: Nuevo / Editar Cliente -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal" style="max-width:480px;">
+      <div class="modal-header">
+        <h3 id="modal-title">Nuevo Cliente</h3>
+        <button class="btn-icon" id="modal-close">✕</button>
+      </div>
+      <form id="client-form" novalidate style="display:flex;flex-direction:column;gap:16px;">
+        <input type="hidden" id="client-id"/>
+
+        <div class="form-group">
+          <label class="form-label" for="f-nombre">Nombre del Cliente *</label>
+          <input type="text" id="f-nombre" class="form-control" placeholder="Ej. María González" required/>
+          <span class="form-error">El nombre es obligatorio</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="f-codigo">Código</label>
+          <div style="position:relative;">
+            <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-weight:700;font-size:0.85rem;">CLI-</span>
+            <input type="text" id="f-codigo" class="form-control" placeholder="001 (auto si vacío)" style="padding-left:44px;"/>
+          </div>
+          <span class="form-hint">Se genera automáticamente si lo dejas vacío</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="f-contacto">Contacto</label>
+          <input type="text" id="f-contacto" class="form-control"
+            placeholder="correo@ejemplo.com · WhatsApp +51 999... · @telegram"/>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="f-notas">Notas</label>
+          <textarea id="f-notas" class="form-control" rows="3"
+            placeholder="Universidad, preferencias, condiciones de pago…"></textarea>
+        </div>
+
+        <div style="display:flex;gap:10px;justify-content:flex-end;padding-top:4px;">
+          <button type="button" class="btn btn-secondary" id="modal-cancel">Cancelar</button>
+          <button type="submit" class="btn btn-primary" id="modal-submit">
+            <span id="modal-btn-text">Guardar Cliente</span>
+            <span id="modal-spinner" class="spinner hidden"></span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Proyectos del cliente -->
+  <div class="modal-overlay" id="projects-overlay">
+    <div class="modal" style="max-width:640px;">
+      <div class="modal-header">
+        <h3 id="projects-modal-title">Proyectos</h3>
+        <button class="btn-icon" id="projects-modal-close">✕</button>
+      </div>
+      <div id="projects-modal-body"></div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="/static/js/auth.js"></script>
+  <script src="/static/js/api.js"></script>
+  <script src="/static/js/clientes.js"></script>
+</body>
+</html>
